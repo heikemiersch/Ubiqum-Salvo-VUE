@@ -3,26 +3,30 @@
     <div class="banner">
       <h2>+ Sign up or log in to play + + + Sign up or log in</h2>
     </div>
-    <form onsubmit="return false">
-      <input type="text" v-model="username" placeholder="   Please enter Username" />
-      <input type="text" v-model="password" placeholder="   Please enter Password" />
-      <button type="submit" v-on:click="login">Log in</button>
+    <div>
+      <form onsubmit="return false">
+        <input type="text" v-model="username" placeholder="Please enter Username" />
+        <input type="text" v-model="password" placeholder="Please enter Password" />
+        >>>
+        <button type="submit" v-on:click="login">Log in</button>
 
-      <span v-if="loggedIn == true">
+        <!-- <span v-if="loggedIn == true">
         <button type="submit" v-on:click="logout2">Log out</button>
-      </span>
+        </span>-->
 
-      <input type="text" v-model="usernameSign" placeholder="   Please enter Username" />
-      <input type="text" v-model="passwordSign" placeholder="   Please enter Password" />
-      <input
-        type="text"
-        id="missionstatement"
-        v-model="missionstatement"
-        placeholder="   Please enter your Mission Statement"
-      />
-      <!-- <input type="text" style="background-color:  rgb(213, 235, 178);;"> -->
-      <button type="submit" v-on:click="signup">Sign up</button>
-    </form>
+        <input type="text" v-model="usernameSign" placeholder="Please enter Username" />
+        <input type="text" v-model="passwordSign" placeholder="Please enter Password" />
+        <input
+          type="text"
+          id="missionstatement"
+          v-model="missionstatement"
+          placeholder="Please enter your Mission Statement"
+        />
+        <!-- <input type="text" style="background-color:  rgb(213, 235, 178);;"> -->
+        >>>
+        <button type="submit" v-on:click="signup">Sign up</button>
+      </form>
+    </div>
   </div>
 </template>
 

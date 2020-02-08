@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Chilanka|Press+Start+2P&display=swap');
 
+/* * {
+    border: 1px solid black;
+} */
+
 body {
     font-family: 'Press Start 2P', cursive;
     color: #282828;
@@ -9,16 +13,15 @@ body {
 
 .banner {
     display: flex;
+    justify-content: center;
+    align-items: center;
     background: linear-gradient(rgb(68, 60, 65), rgb(90, 243, 18));
     height: 60px;
     margin-bottom: 15px;
-    text-align: center;
 }
 
 h1 {
     font-size: 25px;
-    margin-left: 1%;
-    margin-right: 1%;
 }
 
 h2 {
@@ -33,9 +36,17 @@ h3 {
     margin-right: 1%;
 }
 
+/* ------------------ LOGIN PAGE ------------------ */
+
+form {
+    margin-top: 70px;
+}
+
 input {
+    align-content: center;
+    text-align: center;
     margin-top: 30px;
-    margin-left: 5px;
+    margin-left: 50px;
     border: none;
     background: linear-gradient(rgb(255, 255, 255), rgb(245, 245, 245));
     color: black;
@@ -47,8 +58,10 @@ input {
 }
 
 #missionstatement {
-    width: 820px;
+    width: 850px;
 }
+
+/* ------------------ GAMESLIST PAGE ------------------ */
 
 button {
     margin-top: 30px;
@@ -57,7 +70,7 @@ button {
     color: black;
     height: 40px;
     width: 150px;
-    font-size: 12px;
+    font-size: 15px;
     font-family: 'Press Start 2P',
         cursive;
 }
@@ -73,6 +86,20 @@ ul button {
     width: 110px;
     font-size: 11px;
     padding: 2px;
+}
+
+/* ------------------ GAMEVIEW PAGE ------------------ */
+
+.both-grids {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 2%;
+}
+
+.player-banners {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
 }
 
 .placeShipsRequest {
@@ -107,38 +134,42 @@ ul button {
     height: 30px;
 } */
 
-#shipsToPlace,
 #shipButtons {
     display: flex;
     width: 110px;
-    justify-content: space-between;
 }
 
-#shipsToPlace button {
+/* #shipsToPlace button {
     height: 40px;
     width: 100px;
     font-size: 8px;
     border: 1px solid black;
     background: none;
-}
+} */
 
 #shipButtons {
-    margin-top: 30px;
+    margin-top: 10px;
+    width: 30px;
 }
 
 #shipButtons img {
-    width: 79px;
+    width: 80px;
+    height: 30px;
     border: 1px solid black;
 }
 
-#form {
-    display: flex;
-    justify-content: space-around;
+.drop {
+    width: 100%;
+    height: 100%;
 }
 
-.player-banners {
-    display: flex;
-    justify-content: space-around;
+.drag button {
+    background: none;
+}
+
+.drop.over {
+    border-color: #aaa;
+    background: #ccc
 }
 
 table {
@@ -149,10 +180,12 @@ table {
 td,
 th {
     border: solid black 2px;
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     text-align: center;
 }
+
+/* ------------------ LEADERBOARD PAGE ------------------ */
 
 .leaderboard {
     border: none;
@@ -165,15 +198,4 @@ th {
     border: solid black 2px;
     width: 120px;
     height: 50px;
-}
-
-.both-grids {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 2%;
-}
-
-.drop.over {
-    border-color: #aaa;
-    background: #ccc
 }

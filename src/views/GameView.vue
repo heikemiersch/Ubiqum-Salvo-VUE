@@ -1,14 +1,16 @@
 <template>
   <div>
     <div class="banner">
-      <h1>+ Game View + + + Game View + + + Game View + +</h1>
+      <div>
+        <h1>+ Game View + + + Game View + + + Game View + +</h1>
+      </div>
     </div>
     <!-- <div>
             <button type="submit" v-on:click="goToGameslist" style="float: right; margin-right: 10px; ">Games
                 List</button>
     </div>-->
 
-    <h1>{{ gamePlayerID }}</h1>
+    <!-- <h1>{{ gamePlayerID }}</h1> -->
     <div class="player-banners">
       <p id="player-one">player: {{ player }}</p>
       <p id="turnthing">turn: {{ turn }}</p>
@@ -26,36 +28,69 @@
             <tr v-for="row in rows">
               <th>{{ row }}</th>
               <td v-for="column in columns" v-bind:id="row + column + 'p1'">
-                <drop class="drop" @drop="handleDrop">i</drop>
+                <drop class="drop" @drop="handleDrop"></drop>
               </td>
             </tr>
           </tbody>
         </table>
 
-        <div id="shipsToPlace">
+        <div class="player-banners">
+          <p v-if="shipsPlaced">Ready to go.</p>
+          <p class="placeShipsRequest" v-else>Please place your ships.</p>
+        </div>
+
+        <div id="shipButtons">
           <drag
             class="drag"
             :image="require(`../img/aircraft_carrier.jpg`)"
             :transfer-data="{ example: 'heike123' }"
           >
-            <button type="submit" v-on:click="placeThisShip">
-              <img src="../img/aircraft_carrier.jpg" /></button
-          ></drag>
-          <button type="submit" v-on:click="placeThisShip">
-            Battleship (4)
-          </button>
-          <button type="submit" v-on:click="placeThisShip">Cruiser (3)</button>
-          <button type="submit" v-on:click="placeThisShip">
-            Destroyer (3)
-          </button>
-          <button type="submit" v-on:click="placeThisShip">
-            Submarine (2)
-          </button>
-        </div>
+            <!-- <button type="submit" v-on:click="placeThisShip"> -->
+            <img src="../img/aircraft_carrier.jpg" />
+            <!-- </button> -->
+          </drag>
+          <drag
+            class="drag"
+            :image="require(`../img/battleship.jpg`)"
+            :transfer-data="{ example: 'heike123' }"
+          >
+            <!-- <button type="submit" v-on:click="placeThisShip"> -->
+            <img src="../img/battleship.jpg" />
+            <!-- </button> -->
+          </drag>
+          <drag
+            class="drag"
+            :image="require(`../img/cruiser.jpg`)"
+            :transfer-data="{ example: 'heike123' }"
+          >
+            <!-- <button type="submit" v-on:click="placeThisShip"> -->
+            <img src="../img/cruiser.jpg" />
+            <!-- </button> -->
+          </drag>
+          <drag
+            class="drag"
+            :image="require(`../img/destroyer.jpg`)"
+            :transfer-data="{ example: 'heike123' }"
+          >
+            <!-- <button type="submit" v-on:click="placeThisShip"> -->
+            <img src="../img/destroyer.jpg" />
+            <!-- </button> -->
+          </drag>
+          <drag
+            class="drag"
+            :image="require(`../img/submarine.jpg`)"
+            :transfer-data="{ example: 'heike123' }"
+          >
+            <!-- <button type="submit" v-on:click="placeThisShip"> -->
+            <img src="../img/submarine.jpg" />
+            <!-- </button> -->
+          </drag>
 
-        <div class="player-banners">
-          <p v-if="shipsPlaced">Ready to go.</p>
-          <p class="placeShipsRequest" v-else>Please place your ships.</p>
+          <!-- <button type="submit" v-on:click="placeThisShip">Carrier (5)</button>
+          <button type="submit" v-on:click="placeThisShip">Battleship (4)</button>
+          <button type="submit" v-on:click="placeThisShip">Cruiser (3)</button>
+          <button type="submit" v-on:click="placeThisShip">Destroyer (3)</button>
+          <button type="submit" v-on:click="placeThisShip">Submarine (2)</button>-->
         </div>
 
         <button type="submit" v-on:click="postShips">Post Ships</button>
@@ -74,15 +109,12 @@
           <tbody>
             <tr v-for="row in rows">
               <th>{{ row }}</th>
-              <td
-                v-for="column in columns"
-                v-bind:id="row + column + 'p2'"
-              ></td>
+              <td v-for="column in columns" v-bind:id="row + column + 'p2'"></td>
             </tr>
           </tbody>
         </table>
 
-        <div id="shipButtons">
+        <!-- <div id="shipButtons">
           <button type="submit" v-on:click="placeThisShip">
             <img src="../img/submarine.jpg" />
           </button>
@@ -98,15 +130,14 @@
           <button type="submit" v-on:click="placeThisShip">
             <img src="../img/aircraft_carrier.jpg" />
           </button>
-        </div>
-        <div></div>
+        </div>-->
 
         <div class="player-banners">
           <p v-if="shipsPlaced">Ready to go.</p>
-          <p class="placeShipsRequest" v-else>Please place your ships.</p>
+          <p class="placeShipsRequest" v-else>Opponent is placing ships.</p>
         </div>
 
-        <button type="submit" v-on:click="postShips">Post Ships</button>
+        <!-- <button type="submit" v-on:click="postShips">Post Ships</button> -->
       </div>
     </div>
   </div>
@@ -254,11 +285,11 @@ export default {
       });
     },
 
-    logout2: function() {
-      this.logout();
-      this.loggedIn = false;
-      this.authenticated = false;
-    },
+    // logout2: function() {
+    //   this.logout();
+    //   this.loggedIn = false;
+    //   this.authenticated = false;
+    // },
 
     logout3: function() {
       this.logout();
@@ -306,15 +337,6 @@ export default {
           document.getElementById(k[j] + "p1").style.backgroundColor = "black";
         }
       }
-    },
-
-    placeThisShip: function() {
-      //make the vue errors go away ;-)
-      alert("So what?");
-
-      //i want the cursor to tell me, which cell it's hovering
-      //as soon as ship is placed, btn shall be crossed
-      //when i mouseover the grid i want to see shadows
     },
 
     // create dummyships to post to backend with this one:

@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <h1>schmalz</h1>
     <div id="nav">
       <!--   <router-link to="/">login</router-link>|
       <router-link to="/gameslist">List of Games</router-link>|

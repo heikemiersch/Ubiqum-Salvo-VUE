@@ -4,21 +4,18 @@
       <h3>+ List of Games + + + List of Games + + + List of Games + +</h3>
     </div>
 
-    <span>
+    <div>
       <v-btn @click="logout3" style="float: right; margin-right: 10px">Log out</v-btn>
       <!--  <button type="submit" v-on:click={{ logout3 }} ></button> -->
-    </span>
-    <span>
-      <v-btn @click="goToLeaderboard" style="float: right; margin-right: 10px">Leaderboard</v-btn>
-    </span>
 
-    <span>
+      <v-btn @click="goToLeaderboard" style="float: right; margin-right: 10px">Leaderboard</v-btn>
+
       <v-btn @click="createGame" style="float: right; margin-right: 10px">
         New
         Game
       </v-btn>
-    </span>
-    <h2>SCHINKEN AUFS BROT</h2>
+    </div>
+
     <ul id="listOfGames"></ul>
   </div>
 </template>
@@ -32,7 +29,7 @@ export default {
 
   created() {
     this.fetchGamesListData();
-    console.log("COMPUTED");
+    // console.log("COMPUTED");
   },
 
   data: () => ({
@@ -48,7 +45,6 @@ export default {
 
   methods: {
     fetchGamesListData() {
-      console.log("GELADEN BINLADEN");
       fetch("http://localhost:8080/api/games", {
         method: "GET",
         credentials: "include"
