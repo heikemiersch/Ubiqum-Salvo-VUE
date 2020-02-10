@@ -6,7 +6,7 @@
       <router-link to="/gameview">Gameview</router-link>|
       <router-link to="/leaderboard">Leaderboard</router-link>-->
     </div>
-    <router-view @gamePlayerId="listenGamePlayerId" />
+    <router-view @gamePlayerId="listenGamePlayerId"></router-view>
   </div>
 </template>
 

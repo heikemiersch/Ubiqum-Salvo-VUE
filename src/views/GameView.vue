@@ -93,7 +93,7 @@
           <button type="submit" v-on:click="placeThisShip">Submarine (2)</button>-->
         </div>
 
-        <button type="submit" v-on:click="postShips">Post Ships</button>
+        <button id="post_ships" type="submit" v-on:click="postShips">Post Ships</button>
 
         <!-- <div @click="placeThisShip">test clickable submarine:
                     <img src="img/submarine_small.jpg">
@@ -145,10 +145,9 @@
 
 <script>
 import styles from "../style.css";
+import { Drag, Drop } from "vue-drag-drop";
 
 // @ is an alias to /src
-
-import { Drag, Drop } from "vue-drag-drop";
 
 export default {
   props: ["gpid"],
@@ -216,7 +215,7 @@ export default {
           this.salvoes = game[0].salvoes;
           this.salvoesOpponent = game[0].salvoesOpponent;
 
-          // this.gamePlayerID = getParameterByName('gp');
+          // this.gamePlayerID = getParameterByName("gp");
           // console.log(gamePlayerId);
 
           this.displayTurn();
@@ -265,7 +264,12 @@ export default {
       shipButtons.appendChild(submarineBtn);
     },
 
+    handleChildDragstart(data, event) {
+      event.stopPropagation();
+    },
+
     handleDrop(data) {
+      this.displayShips();
       alert(`You dropped with data: ${JSON.stringify(data)}`);
     },
 
@@ -296,33 +300,6 @@ export default {
       this.loggedIn = false;
       this.authenticated = false;
       window.location.href = "http://localhost:8080/web/index.html?";
-    },
-
-    createGame: function() {
-      fetch("/api/games", {
-        method: "POST"
-        // credentials: "include",
-        // headers: {
-        //   Accept: "application/json",
-        //   "Content-type": "application/x-www-form-urlencoded"
-        // }
-      })
-        .then(response => {
-          console.log(response);
-          if (response.status == 201) {
-            console.log("you just created a game.");
-            return response.json();
-          } else {
-            alert("sorry, no game created.");
-          }
-        })
-        .then(res => {
-          if (res.id) {
-            console.log(res.id);
-            window.open("http://localhost:8080/web/game.html?gp=" + res.id);
-          }
-        })
-        .catch(error => console.log(error));
     },
 
     displayTurn() {

@@ -4,19 +4,19 @@
       <h3>+ List of Games + + + List of Games + + + List of Games + +</h3>
     </div>
 
-    <div>
-      <v-btn @click="logout3" style="float: right; margin-right: 10px">Log out</v-btn>
-      <!--  <button type="submit" v-on:click={{ logout3 }} ></button> -->
-
-      <v-btn @click="goToLeaderboard" style="float: right; margin-right: 10px">Leaderboard</v-btn>
-
-      <v-btn @click="createGame" style="float: right; margin-right: 10px">
-        New
-        Game
-      </v-btn>
+    <div class="column_one">
+      <ul id="listOfGames"></ul>
     </div>
 
-    <ul id="listOfGames"></ul>
+    <div class="column_two">
+      <p>
+        Wanna play? Join a game or create a new one and wait for someone to accept the challenge.
+        Go to leaderboard to have a look at the total score. Or log out and join again later.
+      </p>
+      <button @click="createGame">New Game</button>
+      <button @click="goToLeaderboard">Leaderboard</button>
+      <button @click="logout3">Log out</button>
+    </div>
   </div>
 </template>
 
@@ -24,6 +24,7 @@
 import styles from "../style.css";
 // @ is an alias to /src
 export default {
+  props: ["gpid"],
   name: "gameslist",
   components: {},
 
@@ -40,7 +41,8 @@ export default {
     score: "",
     missionstatement: "",
     loggedIn: false,
-    authenticated: false
+    authenticated: false,
+    gamePlayerID: null
   }),
 
   methods: {
@@ -154,14 +156,15 @@ export default {
     },
 
     goToLeaderboard() {
-      window.open("http://localhost:8080/web/leaderboard.html?");
+      window.open("http://localhost:8081/web/leaderboard.html?");
       // window.location.href = "http://localhost:8080/web/leaderboard.html?";
     },
 
     createGame() {
-      fetch("/api/games", {
-        method: "POST"
-        // credentials: "include",
+      fetch("http://localhost:8080/api/games", {
+        method: "POST",
+        credentials: "include"
+
         // headers: {
         //   Accept: "application/json",
         //   "Content-type": "application/x-www-form-urlencoded"
@@ -178,8 +181,10 @@ export default {
         })
         .then(res => {
           if (res.id) {
+            console.log(res);
             console.log(res.id);
-            window.open("http://localhost:8080/web/game.html?gp=" + res.id);
+
+            // window.open("http://localhost:8080/web/game.html?gp=" + res.id);
           }
         })
         .catch(error => console.log(error));
@@ -206,8 +211,9 @@ export default {
             this.gamePlayerID = res.id;
             this.$emit("gamePlayerId", { gpid: res.id });
             this.$router.push({ name: "gameview", params: { gpid: res.id } });
+            // console.log(this.$route.params);
             // window.location.href = "/gameview";
-            //window.open(`game.html?gp=${res.id}`);
+            // window.open(`game.html?gp=${res.id}`);
           }
         });
     },

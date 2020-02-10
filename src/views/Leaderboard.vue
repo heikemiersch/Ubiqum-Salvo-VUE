@@ -32,9 +32,16 @@
 import styles from "../style.css";
 // @ is an alias to /src
 export default {
-  name: "gameview",
+  name: "leaderboard",
   components: {},
-  data: () => ({}),
+  data: () => ({
+    player: "",
+    opponent: "",
+    username: "",
+    missionstatement: "",
+    score: "",
+    total: ""
+  }),
 
   methods: {
     fetchLeaderboard: function() {
