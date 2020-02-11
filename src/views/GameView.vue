@@ -150,7 +150,7 @@ import { Drag, Drop } from "vue-drag-drop";
 // @ is an alias to /src
 
 export default {
-  props: ["gpid"],
+  props: ["id"],
   name: "gameview",
   components: { Drag, Drop },
   data: function() {
@@ -193,8 +193,11 @@ export default {
   },
 
   created() {
-    console.log(this.gpid);
-    this.gamePlayerID = this.gpid;
+    console.log(this.$route.params.id);
+    // works ↓↓↓↓↓↓↓↓
+    console.log(this.id);
+    this.gamePlayerID = this.id;
+    // works ↓↓↓↓↓↓↓↓
     console.log("PUFF PENG PUFF");
     this.fetchData();
     //this.createShipButtons();
@@ -222,6 +225,7 @@ export default {
           // this.displayShips();
           this.displaySalvoes();
           this.displaySalvoesOpponent();
+          // works ↓↓↓↓↓↓↓↓
           console.log(this.turn);
         })
         .catch(function(error) {
@@ -307,9 +311,9 @@ export default {
     },
 
     displayShips() {
-      for (i in this.ships) {
+      for (var i in this.ships) {
         let k = this.ships[i].shipLocation;
-        for (j in k) {
+        for (var j in k) {
           //console.log(k[j] + "p1");
           document.getElementById(k[j] + "p1").style.backgroundColor = "black";
         }
@@ -352,9 +356,9 @@ export default {
     },
 
     displaySalvoes() {
-      for (i in this.salvoes) {
+      for (var i in this.salvoes) {
         let k = this.salvoes[i].salvoLocation;
-        for (j in k) {
+        for (var j in k) {
           //console.log(k[j] + "p2");
           document.getElementById(k[j] + "p2").innerHTML = "x";
           document.getElementById(k[j] + "p2").style.color = "red";
@@ -364,9 +368,9 @@ export default {
     },
 
     displaySalvoesOpponent() {
-      for (i in this.salvoesOpponent) {
+      for (var i in this.salvoesOpponent) {
         let k = this.salvoesOpponent[i].salvoLocation;
-        for (j in k) {
+        for (var j in k) {
           //console.log(k[j] + "p1");
           document.getElementById(k[j] + "p1").innerHTML = "x";
           document.getElementById(k[j] + "p1").style.color = "red";

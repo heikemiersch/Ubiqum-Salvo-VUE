@@ -24,8 +24,10 @@ export default {
   methods: {
     listenGamePlayerId: function(event) {
       this.gamePlayerId = event.gpid;
+      // works ↓↓↓↓↓↓↓↓
       console.log(event.gpid);
 
+      // works ↓↓↓↓↓↓↓↓
       console.log(this.gamePlayerId);
     }
   }

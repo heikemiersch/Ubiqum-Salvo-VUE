@@ -181,9 +181,10 @@ export default {
         })
         .then(res => {
           if (res.id) {
+            // works ↓↓↓↓↓↓↓↓
             console.log(res);
             console.log(res.id);
-
+            this.$router.push({ name: "gameview", params: { id: res.id } });
             // window.open("http://localhost:8080/web/game.html?gp=" + res.id);
           }
         })
@@ -206,6 +207,7 @@ export default {
           return response.json();
         })
         .then(res => {
+          // works ↓↓↓↓↓↓↓↓
           console.log(res);
           if (res.id) {
             this.gamePlayerID = res.id;

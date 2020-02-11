@@ -18,7 +18,7 @@ const routes = [{
     props: true
   },
   {
-    path: '/gameview',
+    path: '/gameview/:id',
     name: 'gameview',
 
     component: () => import('../views/GameView.vue'),
