@@ -22,13 +22,17 @@
         <table>
           <thead>
             <th></th>
-            <th v-for="column in columns">{{ column }}</th>
+            <th v-for="column in columns" :key="column.id">{{ column }}</th>
           </thead>
           <tbody>
-            <tr v-for="row in rows">
+            <tr v-for="row in rows" :key="row.id">
               <th>{{ row }}</th>
-              <td v-for="column in columns" v-bind:id="row + column + 'p1'">
-                <drop class="drop" @drop="handleDrop"></drop>
+              <td v-for="column in columns" :key="column.id" v-bind:id="row + column + 'p1'">
+                <drop class="drop" @drop="handleDrop" v-bind:id="row + column + 'p1'"></drop>
+                <!-- v-on:mouseover="mouseover"
+                v-on:mouseleave="mouseleave"
+              >
+                {{state}}-->
               </td>
             </tr>
           </tbody>
@@ -41,103 +45,81 @@
 
         <div id="shipButtons">
           <drag
+            id="carrier"
             class="drag"
             :image="require(`../img/aircraft_carrier.jpg`)"
-            :transfer-data="{ example: 'heike123' }"
+            :transfer-data="{ carrier }"
           >
             <!-- <button type="submit" v-on:click="placeThisShip"> -->
             <img src="../img/aircraft_carrier.jpg" />
             <!-- </button> -->
           </drag>
           <drag
+            id="battleship"
             class="drag"
             :image="require(`../img/battleship.jpg`)"
-            :transfer-data="{ example: 'heike123' }"
+            :transfer-data="{ battleship }"
           >
             <!-- <button type="submit" v-on:click="placeThisShip"> -->
             <img src="../img/battleship.jpg" />
             <!-- </button> -->
           </drag>
           <drag
+            id="cruiser"
             class="drag"
             :image="require(`../img/cruiser.jpg`)"
-            :transfer-data="{ example: 'heike123' }"
+            :transfer-data="{ cruiser }"
           >
             <!-- <button type="submit" v-on:click="placeThisShip"> -->
             <img src="../img/cruiser.jpg" />
             <!-- </button> -->
           </drag>
           <drag
+            id="destroyer"
             class="drag"
             :image="require(`../img/destroyer.jpg`)"
-            :transfer-data="{ example: 'heike123' }"
+            :transfer-data="{ destroyer }"
           >
             <!-- <button type="submit" v-on:click="placeThisShip"> -->
             <img src="../img/destroyer.jpg" />
             <!-- </button> -->
           </drag>
           <drag
+            id="submarine"
             class="drag"
             :image="require(`../img/submarine.jpg`)"
-            :transfer-data="{ example: 'heike123' }"
+            :transfer-data="{ submarine }"
           >
             <!-- <button type="submit" v-on:click="placeThisShip"> -->
             <img src="../img/submarine.jpg" />
             <!-- </button> -->
           </drag>
-
-          <!-- <button type="submit" v-on:click="placeThisShip">Carrier (5)</button>
-          <button type="submit" v-on:click="placeThisShip">Battleship (4)</button>
-          <button type="submit" v-on:click="placeThisShip">Cruiser (3)</button>
-          <button type="submit" v-on:click="placeThisShip">Destroyer (3)</button>
-          <button type="submit" v-on:click="placeThisShip">Submarine (2)</button>-->
         </div>
 
-        <button id="post_ships" type="submit" v-on:click="postShips">Post Ships</button>
-
-        <!-- <div @click="placeThisShip">test clickable submarine:
-                    <img src="img/submarine_small.jpg">
-        </div>-->
+        <div class="submit_buttons">
+          <button id="post_ships" type="submit" v-on:click="resetShips">Reset Ships</button>
+          <button id="post_ships" type="submit" v-on:click="postShips">Post Ships</button>
+        </div>
       </div>
 
       <div id="grid-two">
         <table>
           <thead>
             <th></th>
-            <th v-for="column in columns">{{ column }}</th>
+            <th v-for="column in columns" :key="column.id">{{ column }}</th>
           </thead>
           <tbody>
-            <tr v-for="row in rows">
+            <tr v-for="row in rows" :key="row.id">
               <th>{{ row }}</th>
-              <td v-for="column in columns" v-bind:id="row + column + 'p2'"></td>
+              <td v-for="column in columns" :key="column.id" v-bind:id="row + column + 'p2'"></td>
             </tr>
           </tbody>
         </table>
-
-        <!-- <div id="shipButtons">
-          <button type="submit" v-on:click="placeThisShip">
-            <img src="../img/submarine.jpg" />
-          </button>
-          <button type="submit" v-on:click="placeThisShip">
-            <img src="../img/destroyer.jpg" />
-          </button>
-          <button type="submit" v-on:click="placeThisShip">
-            <img src="../img/cruiser.jpg" />
-          </button>
-          <button type="submit" v-on:click="placeThisShip">
-            <img src="../img/battleship.jpg" />
-          </button>
-          <button type="submit" v-on:click="placeThisShip">
-            <img src="../img/aircraft_carrier.jpg" />
-          </button>
-        </div>-->
 
         <div class="player-banners">
           <p v-if="shipsPlaced">Ready to go.</p>
           <p class="placeShipsRequest" v-else>Opponent is placing ships.</p>
         </div>
-
-        <!-- <button type="submit" v-on:click="postShips">Post Ships</button> -->
       </div>
     </div>
   </div>
@@ -157,6 +139,7 @@ export default {
     return {
       rows: ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"],
       columns: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+      cellId: "",
       destroyer: "destroyer",
       submarine: "submarine",
       carrier: "carrier",
@@ -187,8 +170,8 @@ export default {
           type: "battleship",
           locations: ["C1", "C2", "C3", "C4", "C5"]
         }
-      ],
-      state: ""
+      ]
+      // state: ""
     };
   },
 
@@ -272,32 +255,58 @@ export default {
       event.stopPropagation();
     },
 
-    handleDrop(data) {
+    // mouseover() {
+    //   console.log(event.currentTarget.id);
+    // },
+
+    handleDrop(data, event) {
       this.displayShips();
-      alert(`You dropped with data: ${JSON.stringify(data)}`);
+      // works ↓↓↓↓↓↓↓↓
+      // console.log(event.currentTarget.id);
+      // console.log(`${JSON.stringify(data)}`);
+      // let dropPosition = event.currentTarget.id;
+      // let cellLetter = event.currentTarget.id.charCodeAt(0);
+      // let cellNumber = event.currentTarget.id.slice(1, 2);
+      // let cellId = cellLetter + parseInt(cellNumber).toString();
+      // let shipType = `${JSON.stringify(data)}`;
+      // let posToTheRight =
+      //   parseInt(cellLetter).toString() + (parseInt(cellNumber) + 1).toString();
+      // document.getElementById(dropPosition).style.backgroundColor = "grey";
+      // document.getElementBy(posToTheRight).style.backgroundColor = "blue";
+
+      // alert(`You dropped with data: ${JSON.stringify(data)}`);
+
+      // if (event.currentTarget.id) {
+      //   console.log("tinte");
+
+      // console.log(cellLetter);
+      // console.log(parseInt(cellNumber) + 1);
+      // console.log(cellLetter + (parseInt(cellNumber) + 1).toString());
+      // console.log(cellId);
+      // console.log(event.currentTarget.id);
+      // console.log(
+      //   parseInt(
+      //     (parseInt(cellLetter) + 1).toString() +
+      //       (parseInt(cellNumber) + 1).toString()
+      //   )
+      // );
+      // console.log(posToTheRight);
+
+      //   if (shipType) {
+      //     console.log("tante");
+      //   }
+      // }
     },
 
     logout: function() {
       fetch("/api/logout", {
         method: "POST"
-        // credentials: "include",
-        // headers: {
-        //   Accept: "application/json",
-        //   "Content-type": "application/x-www-form-urlencoded"
-        // },
-        // body: `userName=${this.username}&password=${this.password}`
       }).then(response => {
         if (response.status == 200) {
           console.log("logout successful");
         }
       });
     },
-
-    // logout2: function() {
-    //   this.logout();
-    //   this.loggedIn = false;
-    //   this.authenticated = false;
-    // },
 
     logout3: function() {
       this.logout();
@@ -310,6 +319,10 @@ export default {
       this.turn = this.salvoes.length + 1;
     },
 
+    // findOutCellId() {
+    //   var cellId = this.row + this.column;
+    // },
+
     displayShips() {
       for (var i in this.ships) {
         let k = this.ships[i].shipLocation;
@@ -320,7 +333,10 @@ export default {
       }
     },
 
-    // create dummyships to post to backend with this one:
+    resetShips: function() {
+      // bad idea ↓↓↓↓↓↓↓↓
+      location.reload();
+    },
 
     postShips: function() {
       console.log(this.fakeShips);
@@ -346,14 +362,14 @@ export default {
         .then(data => console.log(data));
     },
 
-    mouseover: function() {
-      this.state = "X";
-      console.log("you are here: " + "?");
-    },
+    // mouseover: function() {
+    //   this.state = "X";
+    //   console.log("you are here: " + "?");
+    // },
 
-    mouseleave: function() {
-      this.state = "";
-    },
+    // mouseleave: function() {
+    //   this.state = "";
+    // },
 
     displaySalvoes() {
       for (var i in this.salvoes) {

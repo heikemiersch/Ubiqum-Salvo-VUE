@@ -149,26 +149,9 @@ ul button {
     }
 }
 
-/* img {
-    width: 40px;
-    height: 30px;
-} */
-
 #shipButtons {
     display: flex;
-    width: 110px;
     margin: -7px;
-}
-
-/* #shipsToPlace button {
-    height: 40px;
-    width: 100px;
-    font-size: 8px;
-    border: 1px solid black;
-    background: none;
-} */
-
-#shipButtons {
     margin-top: 10px;
     width: 30px;
 }
@@ -197,9 +180,14 @@ ul button {
     background: #ccc;
 }
 
+.submit_buttons {
+    display: flex;
+    justify-items: right;
+}
+
 #post_ships {
-    width: 130px;
-    margin-top: 20px;
+    width: 160px;
+    margin-top: 30px;
     font-size: 12px;
     padding: 2px;
 }

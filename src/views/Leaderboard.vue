@@ -14,7 +14,7 @@
             <th>Score</th>
           </thead>
           <tbody>
-            <tr v-for="player in leaderboard">
+            <tr v-for="player in leaderboard" :key="player.id">
               <td>{{ player.player }}</td>
               <td>{{ player.wins }}</td>
               <td>{{ player.losses }}</td>
