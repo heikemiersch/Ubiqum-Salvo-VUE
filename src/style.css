@@ -42,7 +42,7 @@ form {
     margin-top: 70px;
 }
 
-input {
+.heikesauer input {
     align-content: center;
     text-align: center;
     margin-top: 30px;
@@ -178,6 +178,16 @@ ul button {
 .drop.over {
     border-color: #aaa;
     background: #ccc;
+}
+
+.radio {
+    /* display: flex;
+    width: 300px;
+    justify-content: center;
+    align-items: center; */
+    font-size: 12px;
+    line-height: 20px;
+    margin-top: 40px;
 }
 
 .submit_buttons {

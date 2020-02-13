@@ -27,12 +27,8 @@
           <tbody>
             <tr v-for="row in rows" :key="row.id">
               <th>{{ row }}</th>
-              <td v-for="column in columns" :key="column.id" v-bind:id="row + column + 'p1'">
-                <drop class="drop" @drop="handleDrop" v-bind:id="row + column + 'p1'"></drop>
-                <!-- v-on:mouseover="mouseover"
-                v-on:mouseleave="mouseleave"
-              >
-                {{state}}-->
+              <td v-for="column in columns" :key="column.id" v-bind:id="row + column">
+                <drop class="drop" @drop="handleDrop" v-bind:id="row + column"></drop>
               </td>
             </tr>
           </tbody>
@@ -48,7 +44,7 @@
             id="carrier"
             class="drag"
             :image="require(`../img/aircraft_carrier.jpg`)"
-            :transfer-data="{ carrier }"
+            :transfer-data="{ shiptype:carrier }"
           >
             <!-- <button type="submit" v-on:click="placeThisShip"> -->
             <img src="../img/aircraft_carrier.jpg" />
@@ -58,7 +54,7 @@
             id="battleship"
             class="drag"
             :image="require(`../img/battleship.jpg`)"
-            :transfer-data="{ battleship }"
+            :transfer-data="{ shiptype:battleship }"
           >
             <!-- <button type="submit" v-on:click="placeThisShip"> -->
             <img src="../img/battleship.jpg" />
@@ -68,7 +64,7 @@
             id="cruiser"
             class="drag"
             :image="require(`../img/cruiser.jpg`)"
-            :transfer-data="{ cruiser }"
+            :transfer-data="{ shiptype:cruiser }"
           >
             <!-- <button type="submit" v-on:click="placeThisShip"> -->
             <img src="../img/cruiser.jpg" />
@@ -78,7 +74,7 @@
             id="destroyer"
             class="drag"
             :image="require(`../img/destroyer.jpg`)"
-            :transfer-data="{ destroyer }"
+            :transfer-data="{ shiptype:destroyer }"
           >
             <!-- <button type="submit" v-on:click="placeThisShip"> -->
             <img src="../img/destroyer.jpg" />
@@ -88,12 +84,18 @@
             id="submarine"
             class="drag"
             :image="require(`../img/submarine.jpg`)"
-            :transfer-data="{ submarine }"
+            :transfer-data="{ shiptype:submarine }"
           >
             <!-- <button type="submit" v-on:click="placeThisShip"> -->
             <img src="../img/submarine.jpg" />
             <!-- </button> -->
           </drag>
+        </div>
+        <div class="radio">
+          <input type="radio" v-model="alignment" v-bind:value="horizontally" />horizontally
+          <input type="radio" v-model="alignment" v-bind:value="vertically" />vertically
+          <br />
+          <p>ships are placed: {{alignment}}</p>
         </div>
 
         <div class="submit_buttons">
@@ -137,9 +139,12 @@ export default {
   components: { Drag, Drop },
   data: function() {
     return {
-      rows: ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"],
-      columns: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+      rows: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
+      columns: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
       cellId: "",
+      alignment: null,
+      horizontally: "horizontally",
+      vertically: "vertically",
       destroyer: "destroyer",
       submarine: "submarine",
       carrier: "carrier",
@@ -171,7 +176,6 @@ export default {
           locations: ["C1", "C2", "C3", "C4", "C5"]
         }
       ]
-      // state: ""
     };
   },
 
@@ -255,47 +259,62 @@ export default {
       event.stopPropagation();
     },
 
-    // mouseover() {
-    //   console.log(event.currentTarget.id);
-    // },
-
     handleDrop(data, event) {
-      this.displayShips();
-      // works ↓↓↓↓↓↓↓↓
-      // console.log(event.currentTarget.id);
+      this.placeShips(data, event);
+
+      // console.log(event);
       // console.log(`${JSON.stringify(data)}`);
-      // let dropPosition = event.currentTarget.id;
-      // let cellLetter = event.currentTarget.id.charCodeAt(0);
-      // let cellNumber = event.currentTarget.id.slice(1, 2);
-      // let cellId = cellLetter + parseInt(cellNumber).toString();
-      // let shipType = `${JSON.stringify(data)}`;
-      // let posToTheRight =
-      //   parseInt(cellLetter).toString() + (parseInt(cellNumber) + 1).toString();
-      // document.getElementById(dropPosition).style.backgroundColor = "grey";
-      // document.getElementBy(posToTheRight).style.backgroundColor = "blue";
+    },
 
-      // alert(`You dropped with data: ${JSON.stringify(data)}`);
+    placeShips(data, event) {
+      function shipsLength() {
+        switch (data.shiptype) {
+          case "carrier":
+            return 4;
+            break;
+          case "battleship":
+            return 5;
+            break;
+          case "cruiser":
+            return 2;
+            break;
+          case "destroyer":
+            return 3;
+            break;
+          case "submarine":
+            return 3;
+            break;
+        }
+      }
 
-      // if (event.currentTarget.id) {
-      //   console.log("tinte");
+      let dropPosition = event.currentTarget.id;
 
-      // console.log(cellLetter);
-      // console.log(parseInt(cellNumber) + 1);
-      // console.log(cellLetter + (parseInt(cellNumber) + 1).toString());
-      // console.log(cellId);
-      // console.log(event.currentTarget.id);
-      // console.log(
-      //   parseInt(
-      //     (parseInt(cellLetter) + 1).toString() +
-      //       (parseInt(cellNumber) + 1).toString()
-      //   )
-      // );
-      // console.log(posToTheRight);
+      if (
+        document.getElementById(dropPosition).style.backgroundColor !== "grey"
+      ) {
+        let shipType = data.shiptype;
+        let cellIdFirstNumber = dropPosition[0];
+        let cellIdSecondNumber = dropPosition[1];
 
-      //   if (shipType) {
-      //     console.log("tante");
-      //   }
-      // }
+        if (cellIdSecondNumber <= 10 - shipsLength()) {
+          for (var i = 0; i < shipsLength(); i++) {
+            // console.log(cellIdSecondNumber);
+            let onemore = parseInt(cellIdSecondNumber) + i;
+            // console.log(onemore);
+            let cellidToTheRight = cellIdFirstNumber + onemore;
+            // console.log(cellidToTheRight);
+            document.getElementById(cellidToTheRight).style.backgroundColor =
+              "grey";
+          }
+        } else {
+          for (var i = 0; i < shipsLength(); i++) {
+            let oneless = parseInt(cellIdSecondNumber) - i;
+            let cellidToTheLeft = cellIdFirstNumber + oneless;
+            document.getElementById(cellidToTheLeft).style.backgroundColor =
+              "grey";
+          }
+        }
+      }
     },
 
     logout: function() {
@@ -319,19 +338,17 @@ export default {
       this.turn = this.salvoes.length + 1;
     },
 
-    // findOutCellId() {
-    //   var cellId = this.row + this.column;
-    // },
+    // hardcoded ships only ↓↓↓↓↓↓↓↓
 
-    displayShips() {
-      for (var i in this.ships) {
-        let k = this.ships[i].shipLocation;
-        for (var j in k) {
-          //console.log(k[j] + "p1");
-          document.getElementById(k[j] + "p1").style.backgroundColor = "black";
-        }
-      }
-    },
+    // displayShips() {
+    //   for (var i in this.ships) {
+    //     let k = this.ships[i].shipLocation;
+    //     for (var j in k) {
+    //       //console.log(k[j] + "p1");
+    //       document.getElementById(k[j] + "p1").style.backgroundColor = "black";
+    //     }
+    //   }
+    // },
 
     resetShips: function() {
       // bad idea ↓↓↓↓↓↓↓↓
@@ -362,15 +379,6 @@ export default {
         .then(data => console.log(data));
     },
 
-    // mouseover: function() {
-    //   this.state = "X";
-    //   console.log("you are here: " + "?");
-    // },
-
-    // mouseleave: function() {
-    //   this.state = "";
-    // },
-
     displaySalvoes() {
       for (var i in this.salvoes) {
         let k = this.salvoes[i].salvoLocation;
@@ -382,6 +390,15 @@ export default {
         }
       }
     },
+
+    // fireMySalvoes(data, event) {
+    //   let salvoPosition = event.currentTarget.id;
+    //   console.log(event.currentTarget.id);
+    //   document
+    //     .getElementById(salvoPosition)
+    //     .addEventListener("click").innerHTML = "x";
+    //   console.log(salvoPosition);
+    // },
 
     displaySalvoesOpponent() {
       for (var i in this.salvoesOpponent) {

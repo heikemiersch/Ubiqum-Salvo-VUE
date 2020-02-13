@@ -3,7 +3,7 @@
     <div class="banner">
       <h2>+ Sign up or log in to play + + + Sign up or log in</h2>
     </div>
-    <div>
+    <div class="heikesauer">
       <form onsubmit="return false">
         <input type="text" v-model="username" placeholder="Please enter Username" />
         <input type="text" v-model="password" placeholder="Please enter Password" />
