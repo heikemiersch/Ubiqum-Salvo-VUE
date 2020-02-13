@@ -181,14 +181,14 @@ ul button {
 }
 
 .radio {
-    /* display: flex;
-    width: 300px;
-    justify-content: center;
-    align-items: center; */
     font-size: 12px;
     line-height: 20px;
     margin-top: 40px;
 }
+
+/* .noshow {
+    display: none;
+} */
 
 .submit_buttons {
     display: flex;

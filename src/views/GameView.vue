@@ -95,7 +95,7 @@
           <input type="radio" v-model="alignment" v-bind:value="horizontally" />horizontally
           <input type="radio" v-model="alignment" v-bind:value="vertically" />vertically
           <br />
-          <p>ships are placed: {{alignment}}</p>
+          <p class="noshow">ships are placed: {{alignment}}</p>
         </div>
 
         <div class="submit_buttons">
@@ -165,36 +165,27 @@ export default {
       authenticated: false,
       gamePlayerID: null,
       shipsPlaced: false,
-      ships: [
-        {
-          shipType: "",
-          locations: []
-        },
-        {
-          shipType: "",
-          locations: []
-        }
-      ],
-      fakeShips: [
-        {
-          type: "carrier",
-          locations: ["B2", "B3", "B4"]
-        },
-        {
-          type: "battleship",
-          locations: ["C1", "C2", "C3", "C4", "C5"]
-        }
-      ]
+      ships: []
+      // fakeShips: [
+      //   {
+      //     type: "carrier",
+      //     locations: ["B2", "B3", "B4"]
+      //   },
+      //   {
+      //     type: "battleship",
+      //     locations: ["C1", "C2", "C3", "C4", "C5"]
+      //   }
+      // ]
     };
   },
 
   created() {
-    console.log(this.$route.params.id);
+    // console.log(this.$route.params.id);
     // works ↓↓↓↓↓↓↓↓
-    console.log(this.id);
+    // console.log(this.id);
     this.gamePlayerID = this.id;
     // works ↓↓↓↓↓↓↓↓
-    console.log("PUFF PENG PUFF");
+
     this.fetchData();
     //this.createShipButtons();
   },
@@ -206,7 +197,7 @@ export default {
       })
         .then(response => response.json())
         .then(game => {
-          console.log(game);
+          // console.log(game);
           this.gamePlayerID = game[0].game_player_id;
           this.player = game[0].player.userName;
           this.opponent = game[0].opponent;
@@ -222,46 +213,11 @@ export default {
           this.displaySalvoes();
           this.displaySalvoesOpponent();
           // works ↓↓↓↓↓↓↓↓
-          console.log(this.turn);
+          // console.log(this.turn);
         })
         .catch(function(error) {
           console.log(error, "<-- error");
         });
-    },
-
-    createShipButtons: function() {
-      let shipButtons = document.getElementById("shipButtons");
-      let carrierBtn = document.createElement("img");
-      carrierBtn.setAttribute("src", "img/aircraft_carrier.jpg");
-      carrierBtn.addEventListener("click", () => {
-        console.log("this could be a carrier");
-      });
-      let battleshipBtn = document.createElement("img");
-      battleshipBtn.setAttribute("src", "img/battleship.jpg");
-      battleshipBtn.addEventListener("click", () => {
-        console.log("this could be a battleship");
-      });
-      let cruiserBtn = document.createElement("img");
-      cruiserBtn.setAttribute("src", "img/cruiser.jpg");
-      cruiserBtn.addEventListener("click", () => {
-        console.log("this could be a cruiser");
-      });
-      let destroyerBtn = document.createElement("img");
-      destroyerBtn.setAttribute("src", "img/destroyer.jpg");
-      destroyerBtn.addEventListener("click", () => {
-        console.log("this could be a destroyer");
-      });
-      let submarineBtn = document.createElement("img");
-      submarineBtn.setAttribute("src", "img/submarine.jpg");
-      submarineBtn.addEventListener("click", () => {
-        console.log("this could be a submarine");
-      });
-
-      shipButtons.appendChild(carrierBtn);
-      shipButtons.appendChild(battleshipBtn);
-      shipButtons.appendChild(cruiserBtn);
-      shipButtons.appendChild(destroyerBtn);
-      shipButtons.appendChild(submarineBtn);
     },
 
     handleChildDragstart(data, event) {
@@ -279,24 +235,32 @@ export default {
       function shipsLength() {
         switch (data.shiptype) {
           case "carrier":
+            document.getElementById("carrier").style.display = "none";
+            // console.log(data.shiptype);
+            // console.log(shipLocation);
             return 4;
             break;
           case "battleship":
+            document.getElementById("battleship").style.display = "none";
             return 5;
             break;
           case "cruiser":
+            document.getElementById("cruiser").style.display = "none";
             return 2;
             break;
           case "destroyer":
+            document.getElementById("destroyer").style.display = "none";
             return 3;
             break;
           case "submarine":
+            document.getElementById("submarine").style.display = "none";
             return 3;
             break;
         }
       }
 
       let dropPosition = event.currentTarget.id;
+      // console.log(dropPosition);
       let shipType = data.shiptype;
       let cellIdFirstNumber = dropPosition[0];
       let cellIdSecondNumber = dropPosition[1];
@@ -308,44 +272,53 @@ export default {
         this.alignment === "horizontally"
       ) {
         if (cellIdSecondNumber <= 10 - shipsLength()) {
+          this.shipLocation = [];
           for (var i = 0; i < shipsLength(); i++) {
             let onemore = parseInt(cellIdSecondNumber) + i;
             let cellidToTheRight = cellIdFirstNumber + onemore;
             document.getElementById(cellidToTheRight).style.backgroundColor =
               "grey";
+            this.shipLocation.push(cellidToTheRight);
           }
+          this.ships.push(data.shiptype, this.shipLocation);
         } else {
+          this.shipLocation = [];
           for (var i = 0; i < shipsLength(); i++) {
             let oneless = parseInt(cellIdSecondNumber) - i;
             let cellidToTheLeft = cellIdFirstNumber + oneless;
             document.getElementById(cellidToTheLeft).style.backgroundColor =
               "grey";
+            this.shipLocation.push(cellidToTheLeft);
           }
+          this.ships.push(data.shiptype, this.shipLocation);
         }
       } else if (
         document.getElementById(dropPosition).style.backgroundColor !==
           "grey" &&
         this.alignment === "vertically"
       ) {
-        console.log(this.alignment);
         if (cellIdFirstNumber <= 10 - shipsLength()) {
+          this.shipLocation = [];
           for (var j = 0; j < shipsLength(); j++) {
-            console.log("fist cell nmb", cellIdFirstNumber);
-
             let onedown = parseInt(cellIdFirstNumber) + j;
             let cellidUnderneath = onedown + cellIdSecondNumber;
-            console.log("unterm rock", cellidUnderneath);
             document.getElementById(cellidUnderneath).style.backgroundColor =
               "grey";
+            this.shipLocation.push(cellidUnderneath);
           }
+          this.ships.push(data.shiptype, this.shipLocation);
         } else {
           for (var j = 0; j < shipsLength(); j++) {
+            this.shipLocation = [];
             let oneup = parseInt(cellIdFirstNumber) - j;
             let cellidAbove = oneup + cellIdSecondNumber;
             document.getElementById(cellidAbove).style.backgroundColor = "grey";
+            this.shipLocation.push(cellidAbove);
           }
+          this.ships.push(data.shiptype, this.shipLocation);
         }
       }
+      console.log("ships: " + this.ships);
     },
 
     logout: function() {
