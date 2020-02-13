@@ -142,7 +142,7 @@ export default {
       rows: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
       columns: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
       cellId: "",
-      alignment: null,
+      alignment: "horizontally",
       horizontally: "horizontally",
       vertically: "vertically",
       destroyer: "destroyer",
@@ -153,7 +153,6 @@ export default {
       player: "",
       opponent: "",
       turn: null,
-      ships: [],
       salvoes: [],
       salvoesOpponent: [],
       username: "",
@@ -166,6 +165,16 @@ export default {
       authenticated: false,
       gamePlayerID: null,
       shipsPlaced: false,
+      ships: [
+        {
+          shipType: "",
+          locations: []
+        },
+        {
+          shipType: "",
+          locations: []
+        }
+      ],
       fakeShips: [
         {
           type: "carrier",
@@ -288,21 +297,20 @@ export default {
       }
 
       let dropPosition = event.currentTarget.id;
+      let shipType = data.shiptype;
+      let cellIdFirstNumber = dropPosition[0];
+      let cellIdSecondNumber = dropPosition[1];
+      let cellId = cellIdFirstNumber + cellIdSecondNumber;
 
       if (
-        document.getElementById(dropPosition).style.backgroundColor !== "grey"
+        document.getElementById(dropPosition).style.backgroundColor !==
+          "grey" &&
+        this.alignment === "horizontally"
       ) {
-        let shipType = data.shiptype;
-        let cellIdFirstNumber = dropPosition[0];
-        let cellIdSecondNumber = dropPosition[1];
-
         if (cellIdSecondNumber <= 10 - shipsLength()) {
           for (var i = 0; i < shipsLength(); i++) {
-            // console.log(cellIdSecondNumber);
             let onemore = parseInt(cellIdSecondNumber) + i;
-            // console.log(onemore);
             let cellidToTheRight = cellIdFirstNumber + onemore;
-            // console.log(cellidToTheRight);
             document.getElementById(cellidToTheRight).style.backgroundColor =
               "grey";
           }
@@ -312,6 +320,29 @@ export default {
             let cellidToTheLeft = cellIdFirstNumber + oneless;
             document.getElementById(cellidToTheLeft).style.backgroundColor =
               "grey";
+          }
+        }
+      } else if (
+        document.getElementById(dropPosition).style.backgroundColor !==
+          "grey" &&
+        this.alignment === "vertically"
+      ) {
+        console.log(this.alignment);
+        if (cellIdFirstNumber <= 10 - shipsLength()) {
+          for (var j = 0; j < shipsLength(); j++) {
+            console.log("fist cell nmb", cellIdFirstNumber);
+
+            let onedown = parseInt(cellIdFirstNumber) + j;
+            let cellidUnderneath = onedown + cellIdSecondNumber;
+            console.log("unterm rock", cellidUnderneath);
+            document.getElementById(cellidUnderneath).style.backgroundColor =
+              "grey";
+          }
+        } else {
+          for (var j = 0; j < shipsLength(); j++) {
+            let oneup = parseInt(cellIdFirstNumber) - j;
+            let cellidAbove = oneup + cellIdSecondNumber;
+            document.getElementById(cellidAbove).style.backgroundColor = "grey";
           }
         }
       }
