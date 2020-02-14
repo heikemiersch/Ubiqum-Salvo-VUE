@@ -9,13 +9,17 @@
     </div>
 
     <div class="column_two">
-      <p>
-        Wanna play? Join a game or create a new one and wait for someone to accept the challenge.
-        Go to leaderboard to have a look at the total score. Or log out and join again later.
-      </p>
-      <button @click="createGame">New Game</button>
-      <button @click="goToLeaderboard">Leaderboard</button>
-      <button @click="logout3">Log out</button>
+      <div class="flexo_buttons">
+        <button @click="createGame">New Game</button>
+        <button @click="goToLeaderboard">Leaderboard</button>
+        <button @click="logout3">Log out</button>
+      </div>
+      <div>
+        <p>
+          Wanna play? Press the Join Button to join a game or create a new one and wait for someone to accept the challenge.
+          Go to leaderboard to have a look at the total score. If you log out, don't forget to join us again later.
+        </p>
+      </div>
     </div>
   </div>
 </template>

@@ -38,6 +38,36 @@ h3 {
 
 /* ------------------ LOGIN PAGE ------------------ */
 
+.command_prompt {
+    margin-top: 40px;
+    font-size: larger;
+    text-align: center;
+    animation: blinkingText1 1.2s infinite;
+}
+
+@keyframes blinkingText1 {
+    0% {
+        color: rgb(80, 74, 74);
+    }
+
+
+    49% {
+        color: rgb(80, 74, 74);
+    }
+
+    60% {
+        color: transparent;
+    }
+
+    99% {
+        color: transparent;
+    }
+
+    100% {
+        color: rgb(80, 74, 74);
+    }
+}
+
 form {
     margin-top: 70px;
 }
@@ -64,15 +94,29 @@ form {
 /* ------------------ GAMESLIST PAGE ------------------ */
 
 .column_one {
-    width: 80;
+    width: 50;
     float: left;
 }
 
 .column_two {
     display: flex;
     flex-direction: column;
-    width: 20%;
+    width: 50%;
     float: right;
+}
+
+.column_two p {
+    line-height: 30px;
+    color: rgb(80, 74, 74);
+    margin-top: 30px;
+    width: 650px;
+    text-align: justify;
+}
+
+.flexo_buttons {
+    display: flex;
+    margin-top: 30px;
+    justify-content: center;
 }
 
 button {
@@ -96,6 +140,7 @@ button {
 ul {
     list-style: none;
     margin-left: 20px;
+    line-height: 20px;
 }
 
 ul button {
@@ -124,10 +169,10 @@ ul button {
 
 .placeShipsRequest {
     color: rgb(243, 22, 22);
-    animation: blinkingText 1.2s infinite;
+    animation: blinkingText2 1.2s infinite;
 }
 
-@keyframes blinkingText {
+@keyframes blinkingText2 {
     0% {
         color: rgb(243, 22, 22);
     }

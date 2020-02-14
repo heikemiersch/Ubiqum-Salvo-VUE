@@ -113,7 +113,12 @@
           <tbody>
             <tr v-for="row in rows" :key="row.id">
               <th>{{ row }}</th>
-              <td v-for="column in columns" :key="column.id" v-bind:id="row + column + 'p2'"></td>
+              <td
+                v-for="column in columns"
+                :key="column.id"
+                v-on:click="shoot(row, column)"
+                v-bind:id="row + column + 'p2'"
+              ></td>
             </tr>
           </tbody>
         </table>
@@ -187,8 +192,8 @@ export default {
       })
         .then(response => response.json())
         .then(game => {
-          console.log(game);
-          this.gamePlayerID = game.game_player_id;
+          console.log(game[0]);
+          this.gamePlayerID = game[0].game_player_id;
           this.player = game[0].player.userName;
           this.opponent = game[0].opponent;
           this.ships = game[0].ships;
@@ -200,8 +205,9 @@ export default {
 
           this.displayTurn();
           this.displayShips();
-          this.displaySalvoes();
+          // this.displaySalvoes();
           this.displaySalvoesOpponent();
+          this.shoot();
           // works ↓↓↓↓↓↓↓↓
           // console.log(this.turn);
         })
@@ -343,9 +349,8 @@ export default {
 
     displayTurn() {
       this.turn = this.salvoes.length + 1;
+      // console.log(this.salvoes.length);
     },
-
-    // hardcoded ships only ↓↓↓↓↓↓↓↓
 
     displayShips() {
       for (var i in this.ships) {
@@ -387,26 +392,30 @@ export default {
         .then(data => console.log(data));
     },
 
-    displaySalvoes() {
-      for (var i in this.salvoes) {
-        let k = this.salvoes[i].salvoLocation;
-        for (var j in k) {
-          //console.log(k[j] + "p2");
-          document.getElementById(k[j] + "p2").innerHTML = "x";
-          document.getElementById(k[j] + "p2").style.color = "red";
-          document.getElementById(k[j] + "p2").style.textAlign = "center";
-        }
-      }
-    },
-
-    // fireMySalvoes(data, event) {
-    //   let salvoPosition = event.currentTarget.id;
-    //   console.log(event.currentTarget.id);
-    //   document
-    //     .getElementById(salvoPosition)
-    //     .addEventListener("click").innerHTML = "x";
-    //   console.log(salvoPosition);
+    // displaySalvoes() {
+    //   for (var i in this.salvoes) {
+    //     let k = this.salvoes[i].salvoLocation;
+    //     for (var j in k) {
+    //       //console.log(k[j] + "p2");
+    //       document.getElementById(k[j] + "p2").innerHTML = "x";
+    //       document.getElementById(k[j] + "p2").style.color = "red";
+    //       document.getElementById(k[j] + "p2").style.textAlign = "center";
+    //     }
+    //   }
     // },
+
+    shoot(row, column) {
+      this.salvoesArray = [];
+      let salvoPositionAtOpponents = row + column + "p2";
+      for (var i = 0; i < 3; i++) {
+        document.getElementById(salvoPositionAtOpponents).innerHTML = "*";
+      }
+      this.salvoesArray.push(salvoPositionAtOpponents);
+      console.log(salvoPositionAtOpponents);
+      console.log(this.salvoesArray);
+      this.salvoes.push(this.salvoesArray);
+      console.log(this.salvoes);
+    },
 
     displaySalvoesOpponent() {
       for (var i in this.salvoesOpponent) {

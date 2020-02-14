@@ -1,7 +1,10 @@
 <template>
   <div>
     <div class="banner">
-      <h2>+ Sign up or log in to play + + + Sign up or log in</h2>
+      <h2>+ + Battleships + + + Battleships + + + Battleships + +</h2>
+    </div>
+    <div class="command_prompt">
+      <p>Please sign up or log in to play.</p>
     </div>
     <div class="heikesauer">
       <form onsubmit="return false">
