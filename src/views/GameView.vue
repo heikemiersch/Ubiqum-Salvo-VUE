@@ -166,16 +166,6 @@ export default {
       gamePlayerID: null,
       shipsPlaced: false,
       ships: []
-      // fakeShips: [
-      //   {
-      //     type: "carrier",
-      //     locations: ["B2", "B3", "B4"]
-      //   },
-      //   {
-      //     type: "battleship",
-      //     locations: ["C1", "C2", "C3", "C4", "C5"]
-      //   }
-      // ]
     };
   },
 
@@ -197,19 +187,19 @@ export default {
       })
         .then(response => response.json())
         .then(game => {
-          // console.log(game);
-          this.gamePlayerID = game[0].game_player_id;
+          console.log(game);
+          this.gamePlayerID = game.game_player_id;
           this.player = game[0].player.userName;
           this.opponent = game[0].opponent;
           this.ships = game[0].ships;
           this.salvoes = game[0].salvoes;
           this.salvoesOpponent = game[0].salvoesOpponent;
-
+          // console.log(this.ships);
           // this.gamePlayerID = getParameterByName("gp");
           // console.log(gamePlayerId);
 
           this.displayTurn();
-          // this.displayShips();
+          this.displayShips();
           this.displaySalvoes();
           this.displaySalvoesOpponent();
           // works ↓↓↓↓↓↓↓↓
@@ -260,7 +250,6 @@ export default {
       }
 
       let dropPosition = event.currentTarget.id;
-      // console.log(dropPosition);
       let shipType = data.shiptype;
       let cellIdFirstNumber = dropPosition[0];
       let cellIdSecondNumber = dropPosition[1];
@@ -280,7 +269,11 @@ export default {
               "grey";
             this.shipLocation.push(cellidToTheRight);
           }
-          this.ships.push(data.shiptype, this.shipLocation);
+          this.ships.push({
+            type: data.shiptype,
+            shipLocation: this.shipLocation
+          });
+          // write a function to loop through ships and call back the grey locs
         } else {
           this.shipLocation = [];
           for (var i = 0; i < shipsLength(); i++) {
@@ -290,7 +283,10 @@ export default {
               "grey";
             this.shipLocation.push(cellidToTheLeft);
           }
-          this.ships.push(data.shiptype, this.shipLocation);
+          this.ships.push({
+            type: data.shiptype,
+            shipLocation: this.shipLocation
+          });
         }
       } else if (
         document.getElementById(dropPosition).style.backgroundColor !==
@@ -306,18 +302,25 @@ export default {
               "grey";
             this.shipLocation.push(cellidUnderneath);
           }
-          this.ships.push(data.shiptype, this.shipLocation);
-        } else {
-          for (var j = 0; j < shipsLength(); j++) {
-            this.shipLocation = [];
-            let oneup = parseInt(cellIdFirstNumber) - j;
-            let cellidAbove = oneup + cellIdSecondNumber;
-            document.getElementById(cellidAbove).style.backgroundColor = "grey";
-            this.shipLocation.push(cellidAbove);
-          }
-          this.ships.push(data.shiptype, this.shipLocation);
+          this.ships.push({
+            type: data.shiptype,
+            shipLocation: this.shipLocation
+          });
         }
+      } else {
+        for (var j = 0; j < shipsLength(); j++) {
+          this.shipLocation = [];
+          let oneup = parseInt(cellIdFirstNumber) - j;
+          let cellidAbove = oneup + cellIdSecondNumber;
+          document.getElementById(cellidAbove).style.backgroundColor = "grey";
+          this.shipLocation.push(cellidAbove);
+        }
+        this.ships.push({
+          type: data.shiptype,
+          shipLocation: this.shipLocation
+        });
       }
+
       console.log("ships: " + this.ships);
     },
 
@@ -344,15 +347,15 @@ export default {
 
     // hardcoded ships only ↓↓↓↓↓↓↓↓
 
-    // displayShips() {
-    //   for (var i in this.ships) {
-    //     let k = this.ships[i].shipLocation;
-    //     for (var j in k) {
-    //       //console.log(k[j] + "p1");
-    //       document.getElementById(k[j] + "p1").style.backgroundColor = "black";
-    //     }
-    //   }
-    // },
+    displayShips() {
+      for (var i in this.ships) {
+        let k = this.ships[i].shipLocation;
+        for (var j in k) {
+          //console.log(k[j] + "p1");
+          document.getElementById(k[j]).style.backgroundColor = "black";
+        }
+      }
+    },
 
     resetShips: function() {
       // bad idea ↓↓↓↓↓↓↓↓
@@ -360,7 +363,7 @@ export default {
     },
 
     postShips: function() {
-      console.log(this.fakeShips);
+      console.log(this.ships);
       fetch(
         "http://localhost:8080/api/games/players/" +
           this.gamePlayerID +
@@ -372,11 +375,12 @@ export default {
             Accept: "application/json",
             "Content-type": "application/json"
           },
-          body: JSON.stringify(this.fakeShips)
+          body: JSON.stringify(this.ships)
         }
       )
         .then(response => {
           console.log(response);
+          // console.log(this.ships);
           this.shipsPlaced = true;
           return response.json();
         })

@@ -113,6 +113,7 @@ export default {
 
           joinButton.addEventListener("click", () => {
             this.joinGame(gamesList[i].game_id);
+            console.log(gamesList[i].game_id);
           });
         }
       }
@@ -193,14 +194,14 @@ export default {
 
     joinGame(gameId) {
       console.log(gameId);
-      fetch(`http://localhost:8080/api/games/join`, {
+      fetch(`http://localhost:8080/api/games/join/${gameId}`, {
         method: "POST",
         credentials: "include",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: `gameId=${gameId}`
+        }
+        // body: `gameId=${gameId}`
       })
         .then(response => {
           console.log(response);
@@ -211,8 +212,8 @@ export default {
           console.log(res);
           if (res.id) {
             this.gamePlayerID = res.id;
-            this.$emit("gamePlayerId", { gpid: res.id });
-            this.$router.push({ name: "gameview", params: { gpid: res.id } });
+            // this.$emit("gamePlayerId", { gpid: res.id });
+            this.$router.push({ name: "gameview", params: { id: res.id } });
             // console.log(this.$route.params);
             // window.location.href = "/gameview";
             // window.open(`game.html?gp=${res.id}`);
