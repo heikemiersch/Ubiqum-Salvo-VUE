@@ -101,6 +101,7 @@
         <div class="submit_buttons">
           <button id="post_ships" type="submit" v-on:click="resetShips">Reset Ships</button>
           <button id="post_ships" type="submit" v-on:click="postShips">Post Ships</button>
+          <button id="post_ships" type="submit" v-on:click="postSalvoes">Post Salvoes</button>
         </div>
       </div>
 
@@ -159,6 +160,11 @@ export default {
       opponent: "",
       turn: null,
       salvoes: [],
+      newSalvo: {
+        turn: 0,
+        salvoLocation: []
+      },
+      salvoLocations: [],
       salvoesOpponent: [],
       username: "",
       password: "",
@@ -190,14 +196,17 @@ export default {
       fetch("http://localhost:8080/api/game_view/" + this.gamePlayerID, {
         method: "GET"
       })
-        .then(response => response.json())
+        .then(response => {
+          console.log(response);
+          return response.json();
+        })
         .then(game => {
-          console.log(game[0]);
+          console.log(game);
           this.gamePlayerID = game[0].game_player_id;
           this.player = game[0].player.userName;
           this.opponent = game[0].opponent;
           this.ships = game[0].ships;
-          this.salvoes = game[0].salvoes;
+          // this.salvoes = game[0].salvoes;
           this.salvoesOpponent = game[0].salvoesOpponent;
           // console.log(this.ships);
           // this.gamePlayerID = getParameterByName("gp");
@@ -205,9 +214,9 @@ export default {
 
           this.displayTurn();
           this.displayShips();
-          // this.displaySalvoes();
+          //this.displaySalvoes();
           this.displaySalvoesOpponent();
-          this.shoot();
+          //this.shoot();
           // works ↓↓↓↓↓↓↓↓
           // console.log(this.turn);
         })
@@ -392,6 +401,33 @@ export default {
         .then(data => console.log(data));
     },
 
+    postSalvoes: function() {
+      this.newSalvo.turn = 1;
+      this.newSalvo.salvoLocation = this.salvoLocations;
+      console.log(JSON.stringify(this.newSalvo));
+      let foo = JSON.stringify([{"turn": 2, salvoLocation: ["B2"], id:7}])
+      console.log('foo :', foo);
+      fetch(
+        "http://localhost:8080/api/games/players/" +
+          this.gamePlayerID +
+          "/salvoes",
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            Accept: "application/json",
+            "Content-type": "application/json"
+          },
+          body: JSON.stringify(this.newSalvo)
+        }
+      ).then(response => {
+        console.log(response);
+        //console.log(this.salvoes);
+        //return response.json();
+      });
+      // .then(data => console.log(data));
+    },
+
     // displaySalvoes() {
     //   for (var i in this.salvoes) {
     //     let k = this.salvoes[i].salvoLocation;
@@ -405,15 +441,17 @@ export default {
     // },
 
     shoot(row, column) {
-      this.salvoesArray = [];
-      let salvoPositionAtOpponents = row + column + "p2";
+      //this.salvoesArray = [];
+
+      let salvoPosition = row + column + "p2";
       for (var i = 0; i < 3; i++) {
-        document.getElementById(salvoPositionAtOpponents).innerHTML = "*";
+        document.getElementById(salvoPosition).innerHTML = "*";
       }
-      this.salvoesArray.push(salvoPositionAtOpponents);
-      console.log(salvoPositionAtOpponents);
-      console.log(this.salvoesArray);
-      this.salvoes.push(this.salvoesArray);
+      //newSalvo.turn = 1;
+      this.salvoLocations.push(row + column);
+
+      // console.log(this.salvoesArray);
+
       console.log(this.salvoes);
     },
 
