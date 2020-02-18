@@ -56,11 +56,11 @@ export default {
         credentials: "include"
       })
         .then(function(response) {
-          console.log(response);
+          // console.log(response);
           return response.json();
         })
         .then(response => {
-          console.log(response);
+          // console.log(response);
           let gamesList = response;
           this.createList(gamesList);
         })
@@ -72,7 +72,7 @@ export default {
 
     createList(gamesList) {
       gamesList.sort((a, b) => b.game_id - a.game_id);
-      console.log(gamesList);
+      // console.log(gamesList);
       let list = document.getElementById("listOfGames");
       list.innerHTML = "";
 

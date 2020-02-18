@@ -197,7 +197,7 @@ export default {
         method: "GET"
       })
         .then(response => {
-          console.log(response);
+          // console.log(response);
           return response.json();
         })
         .then(game => {
@@ -206,7 +206,7 @@ export default {
           this.player = game[0].player.userName;
           this.opponent = game[0].opponent;
           this.ships = game[0].ships;
-          // this.salvoes = game[0].salvoes;
+          this.salvoes = game[0].salvoes;
           this.salvoesOpponent = game[0].salvoesOpponent;
           // console.log(this.ships);
           // this.gamePlayerID = getParameterByName("gp");
@@ -214,10 +214,8 @@ export default {
 
           this.displayTurn();
           this.displayShips();
-          //this.displaySalvoes();
+          this.displaySalvoes();
           this.displaySalvoesOpponent();
-          //this.shoot();
-          // works ↓↓↓↓↓↓↓↓
           // console.log(this.turn);
         })
         .catch(function(error) {
@@ -358,6 +356,7 @@ export default {
 
     displayTurn() {
       this.turn = this.salvoes.length + 1;
+      // works ↓↓↓↓↓↓↓↓
       // console.log(this.salvoes.length);
     },
 
@@ -372,7 +371,7 @@ export default {
     },
 
     resetShips: function() {
-      // bad idea ↓↓↓↓↓↓↓↓
+      // BAD IDEA ↓↓↓↓↓↓↓↓
       location.reload();
     },
 
@@ -404,9 +403,9 @@ export default {
     postSalvoes: function() {
       this.newSalvo.turn = 1;
       this.newSalvo.salvoLocation = this.salvoLocations;
-      console.log(JSON.stringify(this.newSalvo));
-      let foo = JSON.stringify([{"turn": 2, salvoLocation: ["B2"], id:7}])
-      console.log('foo :', foo);
+      // console.log(JSON.stringify(this.newSalvo));
+      // let foo = JSON.stringify([{"turn": 2, salvoLocation: ["B2"], id:7}])
+      // console.log('foo :', foo);
       fetch(
         "http://localhost:8080/api/games/players/" +
           this.gamePlayerID +
@@ -422,47 +421,42 @@ export default {
         }
       ).then(response => {
         console.log(response);
-        //console.log(this.salvoes);
         //return response.json();
       });
       // .then(data => console.log(data));
-    },
-
-    // displaySalvoes() {
-    //   for (var i in this.salvoes) {
-    //     let k = this.salvoes[i].salvoLocation;
-    //     for (var j in k) {
-    //       //console.log(k[j] + "p2");
-    //       document.getElementById(k[j] + "p2").innerHTML = "x";
-    //       document.getElementById(k[j] + "p2").style.color = "red";
-    //       document.getElementById(k[j] + "p2").style.textAlign = "center";
-    //     }
-    //   }
-    // },
+    },    
 
     shoot(row, column) {
-      //this.salvoesArray = [];
-
       let salvoPosition = row + column + "p2";
       for (var i = 0; i < 3; i++) {
         document.getElementById(salvoPosition).innerHTML = "*";
       }
-      //newSalvo.turn = 1;
       this.salvoLocations.push(row + column);
+      console.log(this.newSalvo);
+    },
 
-      // console.log(this.salvoesArray);
-
-      console.log(this.salvoes);
+    displaySalvoes() {
+        for (var i in this.salvoes) {
+        let k = this.salvoes[i].salvoLocation;
+        ///////// THIS IS WHERE THE PROBLEMS BEGIN ↓↓↓↓↓↓↓↓ /////////
+        console.log(k);
+        for (var j in k) {
+          console.log(k[j] + "p2");
+          document.getElementById(k[j] + "p2").innerHTML = "*";
+          document.getElementById(k[j] + "p2").style.color = "red";
+          document.getElementById(k[j] + "p2").style.textAlign = "center";
+        }
+      }
     },
 
     displaySalvoesOpponent() {
       for (var i in this.salvoesOpponent) {
         let k = this.salvoesOpponent[i].salvoLocation;
         for (var j in k) {
-          //console.log(k[j] + "p1");
-          document.getElementById(k[j] + "p1").innerHTML = "x";
-          document.getElementById(k[j] + "p1").style.color = "red";
-          document.getElementById(k[j] + "p1").style.textAlign = "center";
+          //console.log(k[j]);
+          document.getElementById(k[j]).innerHTML = "*";
+          document.getElementById(k[j]).style.color = "red";
+          document.getElementById(k[j]).style.textAlign = "center";
         }
       }
     }
