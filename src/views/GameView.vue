@@ -35,11 +35,11 @@
         </table>
 
         <div class="player-banners">
-          <p v-if="shipsPlaced">Ready to go.</p>
+          <p v-if="shipsPlaced" >Ready to go.</p>
           <p class="placeShipsRequest" v-else>Please place your ships.</p>
         </div>
 
-        <div id="shipButtons">
+        <div v-if="!shipsPlaced" class="shipButtons">
           <drag
             id="carrier"
             class="drag"
@@ -99,9 +99,10 @@
         </div>
 
         <div class="submit_buttons">
-          <button id="post_ships" type="submit" v-on:click="resetShips">Reset Ships</button>
-          <button id="post_ships" type="submit" v-on:click="postShips">Post Ships</button>
-          <button id="post_ships" type="submit" v-on:click="postSalvoes">Post Salvoes</button>
+          <button class="post_ships" type="submit" v-on:click="resetShips">Reset Ships</button>
+          <button class="post_ships" type="submit" v-on:click="postShips">Post Ships</button>
+          <button class="post_ships" type="submit" v-on:click="postSalvoes">Post Salvoes</button>
+          <button class="post_ships" type="submit" v-on:click="resetSalvoes">Reset Salvoes</button>
         </div>
       </div>
 
@@ -180,15 +181,19 @@ export default {
     };
   },
 
-  created() {
+  created() 
+ 
+  { console.log(this.ships);
+    
+      
     // console.log(this.$route.params.id);
     // works ↓↓↓↓↓↓↓↓
     // console.log(this.id);
+   
     this.gamePlayerID = this.id;
-    // works ↓↓↓↓↓↓↓↓
-
     this.fetchData();
-    //this.createShipButtons();
+    console.log(this.shipsPlaced);
+ 
   },
 
   methods: {
@@ -206,6 +211,7 @@ export default {
           this.player = game[0].player.userName;
           this.opponent = game[0].opponent;
           this.ships = game[0].ships;
+          console.log(this.ships);
           this.salvoes = game[0].salvoes;
           this.salvoesOpponent = game[0].salvoesOpponent;
           // console.log(this.ships);
@@ -217,6 +223,10 @@ export default {
           this.displaySalvoes();
           this.displaySalvoesOpponent();
           // console.log(this.turn);
+          if(this.ships.length > 0 ) { 
+          this.shipsPlaced = true }
+          else {
+          this.shipsPlaced = false }
         })
         .catch(function(error) {
           console.log(error, "<-- error");
@@ -286,7 +296,6 @@ export default {
             type: data.shiptype,
             shipLocation: this.shipLocation
           });
-          // write a function to loop through ships and call back the grey locs
         } else {
           this.shipLocation = [];
           for (var i = 0; i < shipsLength(); i++) {
@@ -361,7 +370,7 @@ export default {
     },
 
     displayShips() {
-      for (var i in this.ships) {
+        for (var i in this.ships) {
         let k = this.ships[i].shipLocation;
         for (var j in k) {
           //console.log(k[j] + "p1");
@@ -372,7 +381,16 @@ export default {
 
     resetShips: function() {
       // BAD IDEA ↓↓↓↓↓↓↓↓
-      location.reload();
+      // besser: die arrays löschen, die sich in diesem turn angefüllt haben
+      // und ebenso für die resetSalvoes
+      location.reload(); 
+    //  this.shipsPlaced = false;
+    //  this.ships = [];
+    },
+
+    resetSalvoes() {
+      // BAD IDEA ↓↓↓↓↓↓↓↓
+      location.reload();    
     },
 
     postShips: function() {
@@ -395,9 +413,12 @@ export default {
           console.log(response);
           // console.log(this.ships);
           this.shipsPlaced = true;
+          console.log(this.shipsPlaced);
           return response.json();
         })
-        .then(data => console.log(data));
+        .then(data => console.log(data))
+        .then(data => this.ships.push(data))
+        console.log(this.ships);
     },
 
     postSalvoes: function() {
@@ -426,26 +447,29 @@ export default {
       // .then(data => console.log(data));
     },    
 
-    shoot(row, column) {
-      let salvoPosition = row + column + "p2";
-      for (var i = 0; i < 3; i++) {
-        document.getElementById(salvoPosition).innerHTML = "*";
+    shoot(row, column, salvoLocations) {
+         let salvoPosition = row + column + "p2";
+          // works ↓↓↓↓↓↓↓↓
+         console.log(salvoPosition);
+         for (var i = 0; i < 3; i++) {
+          document.getElementById(salvoPosition).innerHTML = "*";
+          document.getElementById(salvoPosition).style.color = "grey";
       }
       this.salvoLocations.push(row + column);
-      console.log(this.newSalvo);
+      console.log(this.newSalvo);      
     },
 
     displaySalvoes() {
         for (var i in this.salvoes) {
         let k = this.salvoes[i].salvoLocation;
-        ///////// THIS IS WHERE THE PROBLEMS BEGIN ↓↓↓↓↓↓↓↓ /////////
-        console.log(k);
-        for (var j in k) {
-          console.log(k[j] + "p2");
+          for (var j in k) {
+          // console.log(k[j] + "p2");
+           
           document.getElementById(k[j] + "p2").innerHTML = "*";
-          document.getElementById(k[j] + "p2").style.color = "red";
-          document.getElementById(k[j] + "p2").style.textAlign = "center";
+          document.getElementById(k[j] + "p2").style.color = "black";
+          // document.getElementById(k[j] + "p2").style.textAlign = "center";
         }
+        
       }
     },
 
@@ -455,8 +479,8 @@ export default {
         for (var j in k) {
           //console.log(k[j]);
           document.getElementById(k[j]).innerHTML = "*";
-          document.getElementById(k[j]).style.color = "red";
-          document.getElementById(k[j]).style.textAlign = "center";
+          document.getElementById(k[j]).style.color = "black";
+          // document.getElementById(k[j]).style.textAlign = "center";
         }
       }
     }

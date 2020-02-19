@@ -194,14 +194,14 @@ ul button {
     }
 }
 
-#shipButtons {
+.shipButtons {
     display: flex;
     margin: -7px;
     margin-top: 10px;
     width: 30px;
 }
 
-#shipButtons img {
+.shipButtons img {
     width: 80px;
     height: 30px;
     border: 1px solid black;
@@ -238,11 +238,13 @@ ul button {
 .submit_buttons {
     display: flex;
     justify-items: right;
+    margin-left: -3px;
 }
 
-#post_ships {
-    width: 160px;
+.post_ships {
+    width: 100px;
     margin-top: 30px;
+    margin-left: 2px;
     font-size: 12px;
     padding: 2px;
 }
