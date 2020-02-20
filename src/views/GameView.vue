@@ -177,14 +177,13 @@ export default {
       authenticated: false,
       gamePlayerID: null,
       shipsPlaced: false,
-      ships: []
+      ships: [],
+      hits: []
     };
   },
 
-  created() 
- 
-  { console.log(this.ships);
-    
+  created() {
+      console.log(this.ships);
       
     // console.log(this.$route.params.id);
     // works ↓↓↓↓↓↓↓↓
@@ -193,7 +192,7 @@ export default {
     this.gamePlayerID = this.id;
     this.fetchData();
     console.log(this.shipsPlaced);
- 
+
   },
 
   methods: {
@@ -213,15 +212,17 @@ export default {
           this.ships = game[0].ships;
           console.log(this.ships);
           this.salvoes = game[0].salvoes;
+          this.hits = game[0].hits;
+          this.turn = game[0].turn;
           this.salvoesOpponent = game[0].salvoesOpponent;
           // console.log(this.ships);
           // this.gamePlayerID = getParameterByName("gp");
           // console.log(gamePlayerId);
 
-          this.displayTurn();
           this.displayShips();
           this.displaySalvoes();
           this.displaySalvoesOpponent();
+          this.displayHits();
           // console.log(this.turn);
           if(this.ships.length > 0 ) { 
           this.shipsPlaced = true }
@@ -365,18 +366,18 @@ export default {
       window.location.href = "http://localhost:8080/web/index.html?";
     },
 
-    displayTurn() {
-      this.turn = this.salvoes.length + 1;
-      // works ↓↓↓↓↓↓↓↓
-      // console.log(this.salvoes.length);
-    },
+    // displayTurn() {
+    //   this.turn = this.salvoes.length + 1;
+    //   // works ↓↓↓↓↓↓↓↓
+    //   // console.log(this.salvoes.length);
+    // },
 
     displayShips() {
         for (var i in this.ships) {
         let k = this.ships[i].shipLocation;
         for (var j in k) {
           //console.log(k[j] + "p1");
-          document.getElementById(k[j]).style.backgroundColor = "black";
+          document.getElementById(k[j]).style.backgroundColor = " rgb(36, 36, 36)";
         }
       }
     },
@@ -385,9 +386,9 @@ export default {
       // BAD IDEA ↓↓↓↓↓↓↓↓
       // besser: die arrays löschen, die sich in diesem turn angefüllt haben
       // und ebenso für die resetSalvoes
-      location.reload(); 
-    //  this.shipsPlaced = false;
-    //  this.ships = [];
+      //  this.shipsPlaced = false;
+      //  this.ships = [];
+       location.reload(); 
     },
 
     resetSalvoes() {
@@ -415,12 +416,13 @@ export default {
           console.log(response);
           // console.log(this.ships);
           this.shipsPlaced = true;
-          console.log(this.shipsPlaced);
+          // console.log(this.shipsPlaced);
           return response.json();
         })
         .then(data => console.log(data))
         .then(data => this.ships.push(data))
-        console.log(this.ships);
+        location.reload();
+        // console.log(this.ships);
     },
 
     postSalvoes: function() {
@@ -444,6 +446,7 @@ export default {
         }
       ).then(response => {
         console.log(response);
+        location.reload();
         //return response.json();
       });
       // .then(data => console.log(data));
@@ -459,8 +462,7 @@ export default {
       }
       this.salvoLocations.push(row + column);
       console.log(this.newSalvo); 
-      console.log(this.salvoes);
-      
+      console.log(this.salvoes);      
     },
 
     displaySalvoes() {
@@ -472,9 +474,20 @@ export default {
           document.getElementById(k[j] + "p2").innerHTML = "*";
           document.getElementById(k[j] + "p2").style.color = "black";
           // document.getElementById(k[j] + "p2").style.textAlign = "center";
-        }
-        
+        }        
       }
+    },
+
+    displayHits() {      
+        for (var i in this.hits) {
+            console.log("hits", this.hits)
+          let k = this.hits;
+          for (var j in k) {
+            console.log(this.hits);
+            document.getElementById(k[j] + "p2").innerHTML = "*";
+            document.getElementById(k[j] + "p2").style.color = "red";
+          }
+        }
     },
 
     displaySalvoesOpponent() {
@@ -488,6 +501,11 @@ export default {
         }
       }
     }
+
+    // mounted() {
+    //   fetchData();
+    // }
+    
   }
 };
 </script>

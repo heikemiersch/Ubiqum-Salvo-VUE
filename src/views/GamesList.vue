@@ -191,7 +191,7 @@ export default {
             console.log(res.id);
             this.$router.push({ name: "gameview", params: { id: res.id } });
             // window.open("http://localhost:8080/web/game.html?gp=" + res.id);
-          }
+                    }
         })
         .catch(error => console.log(error));
     },
