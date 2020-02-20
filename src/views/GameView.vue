@@ -312,7 +312,7 @@ export default {
         }
       } else if (
         document.getElementById(dropPosition).style.backgroundColor !==
-          "grey" &&
+          "grey" && 
         this.alignment === "vertically"
       ) {
         if (cellIdFirstNumber <= 10 - shipsLength()) {
@@ -329,7 +329,7 @@ export default {
             shipLocation: this.shipLocation
           });
         }
-      } else {
+       else {
         for (var j = 0; j < shipsLength(); j++) {
           this.shipLocation = [];
           let oneup = parseInt(cellIdFirstNumber) - j;
@@ -342,6 +342,8 @@ export default {
           shipLocation: this.shipLocation
         });
       }
+      }
+      
 
       console.log("ships: " + this.ships);
     },
@@ -422,7 +424,7 @@ export default {
     },
 
     postSalvoes: function() {
-      this.newSalvo.turn = 1;
+      this.newSalvo.turn = this.turn;
       this.newSalvo.salvoLocation = this.salvoLocations;
       // console.log(JSON.stringify(this.newSalvo));
       // let foo = JSON.stringify([{"turn": 2, salvoLocation: ["B2"], id:7}])
@@ -456,7 +458,9 @@ export default {
           document.getElementById(salvoPosition).style.color = "grey";
       }
       this.salvoLocations.push(row + column);
-      console.log(this.newSalvo);      
+      console.log(this.newSalvo); 
+      console.log(this.salvoes);
+      
     },
 
     displaySalvoes() {
