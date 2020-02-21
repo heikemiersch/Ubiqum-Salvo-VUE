@@ -16,6 +16,7 @@
       <p id="turnthing">turn: {{ turn }}</p>
       <p id="player-two">player: {{ opponent }}</p>
     </div>
+    <div v-if=gameover class="player-banners">GAME OVER</div>
 
     <div class="both-grids">
       <div id="grid-one">
@@ -178,7 +179,8 @@ export default {
       gamePlayerID: null,
       shipsPlaced: false,
       ships: [],
-      hits: []
+      hits: [],
+      gameover: false
     };
   },
 
@@ -214,6 +216,7 @@ export default {
           this.salvoes = game[0].salvoes;
           this.hits = game[0].hits;
           this.turn = game[0].turn;
+          this.gameover = game[0].gameover;
           this.salvoesOpponent = game[0].salvoesOpponent;
           // console.log(this.ships);
           // this.gamePlayerID = getParameterByName("gp");
