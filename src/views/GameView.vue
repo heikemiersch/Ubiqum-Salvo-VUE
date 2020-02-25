@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="template_div">
     <div class="banner">
       <div>
         <h1>+ Game View + + + Game View + + + Game View + +</h1>
@@ -16,7 +16,7 @@
       <p id="turnthing">turn: {{ turn }}</p>
       <p id="player-two">player: {{ opponent }}</p>
     </div>
-    <div v-if=gameover class="player-banners">GAME OVER</div>
+    <div v-if="gameover" class="player-banners">GAME OVER</div>
 
     <div class="both-grids">
       <div id="grid-one">
@@ -36,7 +36,7 @@
         </table>
 
         <div class="player-banners">
-          <p v-if="shipsPlaced" >Ready to go.</p>
+          <p v-if="shipsPlaced">Ready to go.</p>
           <p class="placeShipsRequest" v-else>Please place your ships.</p>
         </div>
 
@@ -126,10 +126,9 @@
           </tbody>
         </table>
 
-        <div class="player-banners">
+        <!-- <div class="player-banners">
           <p v-if="shipsPlaced">Ready to go.</p>
-          <p class="placeShipsRequest" v-else>Opponent is placing ships.</p>
-        </div>
+        <p class="placeShipsRequest" v-else>Opponent is placing ships.</p>-->
       </div>
     </div>
   </div>
@@ -160,7 +159,7 @@ export default {
       battleship: "battleship",
       player: "",
       opponent: "",
-      turn: null,
+      turn: 1,
       salvoes: [],
       newSalvo: {
         turn: 0,
@@ -185,16 +184,15 @@ export default {
   },
 
   created() {
-      console.log(this.ships);
-      
+    console.log(this.ships);
+
     // console.log(this.$route.params.id);
     // works ↓↓↓↓↓↓↓↓
     // console.log(this.id);
-   
+
     this.gamePlayerID = this.id;
     this.fetchData();
     console.log(this.shipsPlaced);
-
   },
 
   methods: {
@@ -227,10 +225,11 @@ export default {
           this.displaySalvoesOpponent();
           this.displayHits();
           // console.log(this.turn);
-          if(this.ships.length > 0 ) { 
-          this.shipsPlaced = true }
-          else {
-          this.shipsPlaced = false }
+          if (this.ships.length > 0) {
+            this.shipsPlaced = true;
+          } else {
+            this.shipsPlaced = false;
+          }
         })
         .catch(function(error) {
           console.log(error, "<-- error");
@@ -316,7 +315,7 @@ export default {
         }
       } else if (
         document.getElementById(dropPosition).style.backgroundColor !==
-          "grey" && 
+          "grey" &&
         this.alignment === "vertically"
       ) {
         if (cellIdFirstNumber <= 10 - shipsLength()) {
@@ -332,22 +331,20 @@ export default {
             type: data.shiptype,
             shipLocation: this.shipLocation
           });
+        } else {
+          for (var j = 0; j < shipsLength(); j++) {
+            this.shipLocation = [];
+            let oneup = parseInt(cellIdFirstNumber) - j;
+            let cellidAbove = oneup + cellIdSecondNumber;
+            document.getElementById(cellidAbove).style.backgroundColor = "grey";
+            this.shipLocation.push(cellidAbove);
+          }
+          this.ships.push({
+            type: data.shiptype,
+            shipLocation: this.shipLocation
+          });
         }
-       else {
-        for (var j = 0; j < shipsLength(); j++) {
-          this.shipLocation = [];
-          let oneup = parseInt(cellIdFirstNumber) - j;
-          let cellidAbove = oneup + cellIdSecondNumber;
-          document.getElementById(cellidAbove).style.backgroundColor = "grey";
-          this.shipLocation.push(cellidAbove);
-        }
-        this.ships.push({
-          type: data.shiptype,
-          shipLocation: this.shipLocation
-        });
       }
-      }
-      
 
       console.log("ships: " + this.ships);
     },
@@ -376,11 +373,12 @@ export default {
     // },
 
     displayShips() {
-        for (var i in this.ships) {
+      for (var i in this.ships) {
         let k = this.ships[i].shipLocation;
         for (var j in k) {
           //console.log(k[j] + "p1");
-          document.getElementById(k[j]).style.backgroundColor = " rgb(36, 36, 36)";
+          document.getElementById(k[j]).style.backgroundColor =
+            " rgb(36, 36, 36)";
         }
       }
     },
@@ -391,12 +389,12 @@ export default {
       // und ebenso für die resetSalvoes
       //  this.shipsPlaced = false;
       //  this.ships = [];
-       location.reload(); 
+      location.reload();
     },
 
     resetSalvoes() {
       // BAD IDEA ↓↓↓↓↓↓↓↓
-      location.reload();    
+      location.reload();
     },
 
     postShips: function() {
@@ -423,9 +421,9 @@ export default {
           return response.json();
         })
         .then(data => console.log(data))
-        .then(data => this.ships.push(data))
-        location.reload();
-        // console.log(this.ships);
+        .then(data => this.ships.push(data));
+      location.reload();
+      // console.log(this.ships);
     },
 
     postSalvoes: function() {
@@ -453,44 +451,50 @@ export default {
         //return response.json();
       });
       // .then(data => console.log(data));
-    },    
+    },
 
     shoot(row, column, salvoLocations) {
-         let salvoPosition = row + column + "p2";
-          // works ↓↓↓↓↓↓↓↓
-         console.log(salvoPosition);
-         for (var i = 0; i < 3; i++) {
+      let salvoPosition = row + column + "p2";
+      if (
+        document.getElementById(salvoPosition).style.color !== "black" &&
+        document.getElementById(salvoPosition).style.color !== "grey" &&
+        document.getElementById(salvoPosition).style.color !== "red"
+      ) {
+        // works ↓↓↓↓↓↓↓↓
+        console.log(salvoPosition);
+        for (var i = 0; i < 3; i++) {
           document.getElementById(salvoPosition).innerHTML = "*";
           document.getElementById(salvoPosition).style.color = "grey";
+        }
+        this.salvoLocations.push(row + column);
+        console.log(this.newSalvo);
+        console.log(this.salvoes);
       }
-      this.salvoLocations.push(row + column);
-      console.log(this.newSalvo); 
-      console.log(this.salvoes);      
     },
 
     displaySalvoes() {
-        for (var i in this.salvoes) {
+      for (var i in this.salvoes) {
         let k = this.salvoes[i].salvoLocation;
-          for (var j in k) {
+        for (var j in k) {
           // console.log(k[j] + "p2");
-           
+
           document.getElementById(k[j] + "p2").innerHTML = "*";
           document.getElementById(k[j] + "p2").style.color = "black";
           // document.getElementById(k[j] + "p2").style.textAlign = "center";
-        }        
+        }
       }
     },
 
-    displayHits() {      
-        for (var i in this.hits) {
-            console.log("hits", this.hits)
-          let k = this.hits;
-          for (var j in k) {
-            console.log(this.hits);
-            document.getElementById(k[j] + "p2").innerHTML = "*";
-            document.getElementById(k[j] + "p2").style.color = "red";
-          }
+    displayHits() {
+      for (var i in this.hits) {
+        console.log("hits", this.hits);
+        let k = this.hits;
+        for (var j in k) {
+          console.log(this.hits);
+          document.getElementById(k[j] + "p2").innerHTML = "*";
+          document.getElementById(k[j] + "p2").style.color = "red";
         }
+      }
     },
 
     displaySalvoesOpponent() {
@@ -508,7 +512,6 @@ export default {
     // mounted() {
     //   fetchData();
     // }
-    
   }
 };
 </script>

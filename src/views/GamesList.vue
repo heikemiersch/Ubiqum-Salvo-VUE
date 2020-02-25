@@ -3,22 +3,22 @@
     <div class="banner">
       <h3>+ List of Games + + + List of Games + + + List of Games + +</h3>
     </div>
-
-    <div class="column_one">
-      <ul id="listOfGames"></ul>
-    </div>
-
-    <div class="column_two">
-      <div class="flexo_buttons">
-        <button @click="createGame">New Game</button>
-        <button @click="goToLeaderboard">Leaderboard</button>
-        <button @click="logout3">Log out</button>
+    <div class="column_flex">
+      <div class="column_one">
+        <ul id="listOfGames"></ul>
       </div>
-      <div>
+
+      <div class="column_two">
         <p>
           Wanna play? Press the Join Button to join a game or create a new one and wait for someone to accept the challenge.
           Go to leaderboard to have a look at the total score. If you log out, don't forget to join us again later.
         </p>
+      </div>
+
+      <div class="column_three">
+        <button @click="createGame">New Game</button>
+        <button @click="goToLeaderboard">Leaderboard</button>
+        <button @click="logout3">Log out</button>
       </div>
     </div>
   </div>
@@ -78,7 +78,7 @@ export default {
 
       for (let i = 0; i < gamesList.length; i++) {
         let line = document.createElement("div");
-        line.innerHTML = "----------------------------------";
+        line.innerHTML = "---------------------------------------";
         let listItemGameId = document.createElement("li");
         listItemGameId.innerHTML = "Game " + gamesList[i].game_id;
 
@@ -191,7 +191,7 @@ export default {
             console.log(res.id);
             this.$router.push({ name: "gameview", params: { id: res.id } });
             // window.open("http://localhost:8080/web/game.html?gp=" + res.id);
-                    }
+          }
         })
         .catch(error => console.log(error));
     },

@@ -1,7 +1,8 @@
 @import url('https://fonts.googleapis.com/css?family=Chilanka|Press+Start+2P&display=swap');
 
 /* * {
-    border: 1px solid black;
+    border: 1px solid grey;
+
 } */
 
 body {
@@ -13,11 +14,12 @@ body {
 
 .banner {
     display: flex;
-    justify-content: center;
     align-items: center;
     background: linear-gradient(rgb(68, 60, 65), rgb(90, 243, 18));
     height: 60px;
+    width: 2000px;
     margin-bottom: 15px;
+    overflow: hidden;
 }
 
 h1 {
@@ -28,6 +30,8 @@ h2 {
     font-size: 23px;
     margin-left: 0.5%;
     margin-right: 0.5%;
+    /* width:100%;
+    overflow: hidden; */
 }
 
 h3 {
@@ -38,45 +42,26 @@ h3 {
 
 /* ------------------ LOGIN PAGE ------------------ */
 
+
 .command_prompt {
     margin-top: 40px;
     font-size: larger;
     text-align: center;
-    animation: blinkingText1 1.2s infinite;
+    color: rgb(80, 74, 74)
 }
 
-@keyframes blinkingText1 {
-    0% {
-        color: rgb(80, 74, 74);
-    }
-
-
-    49% {
-        color: rgb(80, 74, 74);
-    }
-
-    60% {
-        color: transparent;
-    }
-
-    99% {
-        color: transparent;
-    }
-
-    100% {
-        color: rgb(80, 74, 74);
-    }
-}
 
 form {
-    margin-top: 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-.heikesauer input {
-    align-content: center;
+.fillin input {
     text-align: center;
     margin-top: 30px;
-    margin-left: 50px;
+    padding: 20px;
     border: none;
     background: linear-gradient(rgb(255, 255, 255), rgb(245, 245, 245));
     color: black;
@@ -87,20 +72,33 @@ form {
         cursive;
 }
 
-#missionstatement {
-    width: 850px;
+.fillin button {
+    border: none;
+    background: linear-gradient(rgb(68, 60, 65), rgb(90, 243, 18));
+    color: black;
+    height: 40px;
+    width: 170px;
+    margin-top: 30px;
+    font-size: 15px;
+    font-family: 'Press Start 2P',
+        cursive;
+    margin-left: 20px;
 }
 
 /* ------------------ GAMESLIST PAGE ------------------ */
 
+.column_flex {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+}
+
 .column_one {
-    width: 50;
-    float: left;
+    width: 650px;
+    text-align: justify;
 }
 
 .column_two {
-    display: flex;
-    flex-direction: column;
     width: 50%;
     float: right;
 }
@@ -109,18 +107,16 @@ form {
     line-height: 30px;
     color: rgb(80, 74, 74);
     margin-top: 30px;
-    width: 650px;
     text-align: justify;
 }
 
-.flexo_buttons {
+.column_three {
     display: flex;
     margin-top: 30px;
     justify-content: center;
 }
 
 button {
-    /* margin-top: 30px; */
     border: none;
     background: linear-gradient(rgb(68, 60, 65), rgb(90, 243, 18));
     color: black;
@@ -130,11 +126,6 @@ button {
     font-family: 'Press Start 2P',
         cursive;
     margin-left: 20px;
-}
-
-.column_two button {
-
-    margin: 5px;
 }
 
 ul {
@@ -155,6 +146,11 @@ ul button {
 
 /* ------------------ GAMEVIEW PAGE ------------------ */
 
+
+.template_div {
+    width: 100%
+}
+
 .both-grids {
     display: flex;
     justify-content: space-around;
@@ -165,6 +161,14 @@ ul button {
     display: flex;
     justify-content: space-around;
     margin-top: 15px;
+}
+
+.player-banners p {
+    font-size: 12px;
+}
+
+#player-one {
+    color: red;
 }
 
 .placeShipsRequest {
@@ -231,10 +235,6 @@ ul button {
     margin-top: 40px;
 }
 
-/* .noshow {
-    display: none;
-} */
-
 .submit_buttons {
     display: flex;
     justify-items: right;
@@ -277,3 +277,16 @@ th {
     height: 50px;
 }
 
+@media all and (max-width: 900px) {
+    .both-grids {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        margin-top: 2%;
+    }
+
+    #grid-two {
+        margin-top: 70px;
+    }
+}
